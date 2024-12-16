@@ -31,6 +31,12 @@ typedef InstaPickerActionsBuilder = List<Widget> Function(
   VoidCallback unselectAll,
 );
 
+typedef InstaPickerAppBarActionsBuilder = List<Widget> Function(
+  BuildContext context,
+  int selectedAssetsLength,
+  void Function(BuildContext context) confirm,
+);
+
 class InstaAssetPickerBuilder extends DefaultAssetPickerBuilderDelegate {
   InstaAssetPickerBuilder({
     required super.initialPermission,
@@ -45,6 +51,7 @@ class InstaAssetPickerBuilder extends DefaultAssetPickerBuilderDelegate {
         closeOnComplete = config.closeOnComplete,
         skipCropOnComplete = config.skipCropOnComplete,
         actionsBuilder = config.actionsBuilder,
+        appBarActionsBuilder = config.appBarActionsBuilder,
         super(
           gridCount: config.gridCount,
           pickerTheme: config.pickerTheme,
@@ -73,6 +80,10 @@ class InstaAssetPickerBuilder extends DefaultAssetPickerBuilderDelegate {
   /// The [Widget] to display on top of the assets grid view.
   /// Default is unselect all assets button.
   final InstaPickerActionsBuilder? actionsBuilder;
+
+  /// The [Widget] to display on app bar.
+  /// Default is confirm button.
+  final InstaPickerAppBarActionsBuilder? appBarActionsBuilder;
 
   /// Should the picker be closed when the selection is confirmed
   ///
@@ -517,7 +528,18 @@ class InstaAssetPickerBuilder extends DefaultAssetPickerBuilderDelegate {
                               )
                             : null,
                         leading: backButton(context),
-                        actions: <Widget>[confirmButton(context)],
+                        actions: appBarActionsBuilder == null
+                            ? <Widget>[confirmButton(context)]
+                            : <Widget>[
+                                Consumer<DefaultAssetPickerProvider>(
+                                  builder:
+                                      (_, DefaultAssetPickerProvider p, __) =>
+                                          Row(
+                                    children: appBarActionsBuilder!(context,
+                                        p.selectedAssets.length, onConfirm),
+                                  ),
+                                ),
+                              ],
                       ),
                       body: DecoratedBox(
                         decoration: BoxDecoration(

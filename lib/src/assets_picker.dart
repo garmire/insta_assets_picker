@@ -57,6 +57,7 @@ class InstaAssetPickerConfig {
     this.closeOnComplete = false,
     this.skipCropOnComplete = false,
     this.actionsBuilder,
+    this.appBarActionsBuilder,
   });
 
   /* [DefaultAssetPickerBuilderDelegate] config */
@@ -129,6 +130,10 @@ class InstaAssetPickerConfig {
   ///
   /// Default is unselect all assets button.
   final InstaPickerActionsBuilder? actionsBuilder;
+
+  /// The [Widget] to display on app bar.
+  /// Default is confirm button.
+  final InstaPickerAppBarActionsBuilder? appBarActionsBuilder;
 }
 
 class InstaAssetPicker {
