@@ -29,6 +29,12 @@ dependencies:
   provider: ^6.0.5
   video_player: ^2.7.0
 
+dependency_overrides:
+  insta_assets_crop:
+    git:
+      url: https://github.com/garmire/image_crop
+      ref: 5e3d20ab532e5fbd17310be0cc06fe0cd33bc558
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
