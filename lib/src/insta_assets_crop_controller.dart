@@ -59,6 +59,7 @@ class InstaAssetsCropData {
   // export crop params
   final double scale;
   final Rect? area;
+  bool on;
 
   /// Returns crop filter for ffmpeg in "out_w:out_h:x:y" format
   String? get ffmpegCrop {
@@ -81,22 +82,25 @@ class InstaAssetsCropData {
     return 'iw*$scale:ih*$scale';
   }
 
-  const InstaAssetsCropData({
+  InstaAssetsCropData({
     required this.asset,
     required this.cropParam,
     this.scale = 1.0,
     this.area,
-  });
+    bool? on,
+  }) : on = on ?? false;
 
   static InstaAssetsCropData fromState({
     required AssetEntity asset,
     required CropState? cropState,
+    bool? on,
   }) {
     return InstaAssetsCropData(
       asset: asset,
       cropParam: cropState?.internalParameters,
       scale: cropState?.scale ?? 1.0,
       area: cropState?.area,
+      on: on,
     );
   }
 }
@@ -192,6 +196,7 @@ class InstaAssetsCropController {
         newList.add(InstaAssetsCropData.fromState(
           asset: saveAsset,
           cropState: saveCropState,
+          on: savedCropAsset?.on,
         ));
         // if it is not the asset to save and no crop parameter exists
       } else if (savedCropAsset == null) {

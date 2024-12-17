@@ -272,7 +272,7 @@ class _InnerCropViewState extends State<InnerCropView>
               : const SizedBox.shrink(),
         ),
 
-        // Build crop aspect ratio button
+        // Build crop and play buttons
         Positioned(
           left: 12,
           right: 12,
@@ -284,6 +284,8 @@ class _InnerCropViewState extends State<InnerCropView>
                   ? const SizedBox.shrink()
                   : _buildCropButton(),
               if (widget.asset.type == AssetType.video) _buildPlayVideoButton(),
+              if (widget.asset.type == AssetType.image)
+                _buildCropToggleButton(),
             ],
           ),
         ),
@@ -338,6 +340,32 @@ class _InnerCropViewState extends State<InnerCropView>
               ? const Icon(Icons.pause_rounded)
               : const Icon(Icons.play_arrow_rounded),
         ),
+      ),
+    );
+  }
+
+  Widget _buildCropToggleButton() {
+    final data = widget.controller.get(widget.asset);
+    final on = data != null && data.on;
+
+    return Opacity(
+      opacity: 0.6,
+      child: InstaPickerToggleButton(
+        text: "Crop ${on ? "on" : "off"}",
+        on: on,
+        onTap: () {
+          setState(() {
+            if (data != null) {
+              data.on = !data.on;
+            }
+          });
+        },
+        theme: widget.theme?.copyWith(
+          buttonTheme: const ButtonThemeData(
+            padding: EdgeInsets.symmetric(vertical: 2, horizontal: 8),
+          ),
+        ),
+        size: 32,
       ),
     );
   }
