@@ -33,7 +33,6 @@ typedef InstaPickerActionsBuilder = List<Widget> Function(
 
 typedef InstaPickerAppBarActionsBuilder = List<Widget> Function(
   BuildContext context,
-  int selectedAssetsLength,
   void Function(BuildContext context) confirm,
 );
 
@@ -524,22 +523,20 @@ class InstaAssetPickerBuilder extends DefaultAssetPickerBuilderDelegate {
                         title: title != null
                             ? Text(
                                 title!,
-                                style: theme.appBarTheme.titleTextStyle,
                               )
-                            : null,
+                            : Consumer<DefaultAssetPickerProvider>(
+                                builder:
+                                    (_, DefaultAssetPickerProvider p, __) =>
+                                        Text(
+                                  p.selectedAssets.length > 0
+                                      ? "${p.selectedAssets.length} Selected"
+                                      : "",
+                                ),
+                              ),
                         leading: backButton(context),
                         actions: appBarActionsBuilder == null
                             ? <Widget>[confirmButton(context)]
-                            : <Widget>[
-                                Consumer<DefaultAssetPickerProvider>(
-                                  builder:
-                                      (_, DefaultAssetPickerProvider p, __) =>
-                                          Row(
-                                    children: appBarActionsBuilder!(context,
-                                        p.selectedAssets.length, onConfirm),
-                                  ),
-                                ),
-                              ],
+                            : appBarActionsBuilder!(context, onConfirm),
                       ),
                       body: DecoratedBox(
                         decoration: BoxDecoration(
