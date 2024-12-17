@@ -230,7 +230,6 @@ class _InnerCropViewState extends State<InnerCropView>
             backgroundColor: widget.theme!.canvasColor,
             initialParam: widget.cropParam,
             size: widget.asset.orientatedSize,
-            cropOverlayBuilder: _buildCropOverlay,
             child: widget.asset.type == AssetType.image
                 ? ExtendedImage(
                     image: AssetEntityImageProvider(
@@ -341,42 +340,5 @@ class _InnerCropViewState extends State<InnerCropView>
         ),
       ),
     );
-  }
-
-  Widget _buildCropResetButton(VoidCallback resetCrop) {
-    return Opacity(
-      opacity: 0.6,
-      child: InstaPickerTextIconButton(
-        text: "Revert crop",
-        onTap: () {
-          widget.controller.cropRatioIndex.value = 0;
-          resetCrop();
-        },
-        theme: widget.theme?.copyWith(
-          buttonTheme: const ButtonThemeData(
-            padding: EdgeInsets.symmetric(vertical: 2, horizontal: 8),
-          ),
-        ),
-        size: 32,
-        icon: Icon(Icons.crop),
-      ),
-    );
-  }
-
-  Widget _buildCropOverlay(
-      BuildContext context, bool hasCrop, VoidCallback resetCrop) {
-    return widget.asset.type == AssetType.image &&
-            (hasCrop || widget.controller.cropRatioIndex.value != 0)
-        ? Positioned(
-            left: 12,
-            right: 12,
-            top: 12,
-            child: Row(
-              children: [
-                _buildCropResetButton(resetCrop),
-              ],
-            ),
-          )
-        : const SizedBox.shrink();
   }
 }
