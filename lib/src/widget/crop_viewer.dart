@@ -346,18 +346,19 @@ class _InnerCropViewState extends State<InnerCropView>
 
   Widget _buildCropToggleButton() {
     final data = widget.controller.get(widget.asset);
-    final on = data != null && data.on;
+
+    if (data == null) {
+      return const SizedBox.shrink();
+    }
 
     return Opacity(
       opacity: 0.6,
       child: InstaPickerToggleButton(
-        text: "Crop ${on ? "on" : "off"}",
-        on: on,
+        text: "Crop ${data.on ? "on" : "off"}",
+        on: data.on,
         onTap: () {
           setState(() {
-            if (data != null) {
-              data.on = !data.on;
-            }
+            data.on = !data.on;
           });
         },
         theme: widget.theme?.copyWith(
