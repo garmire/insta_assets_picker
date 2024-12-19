@@ -113,6 +113,11 @@ class InstaAssetPickerBuilder extends DefaultAssetPickerBuilderDelegate {
   bool _mounted = true;
 
   @override
+  void initState(AssetPickerState<AssetEntity, AssetPathEntity> state) {
+    _mounted = true;
+  }
+
+  @override
   void dispose() {
     _mounted = false;
     if (!keepScrollOffset) {
