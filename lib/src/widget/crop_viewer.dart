@@ -80,10 +80,7 @@ class CropViewerState extends State<CropViewer> {
             final asset = previewAsset ?? selected[effectiveIndex];
             final savedCropParam = widget.controller.get(asset)?.cropParam;
 
-            // if the selected asset changed, save the previous crop parameters state
-            if (asset != _previousAsset && _previousAsset != null) {
-              saveCurrentCropChanges();
-            }
+            saveCurrentCropChanges();
 
             _previousAsset = asset;
 
